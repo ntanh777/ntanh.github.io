@@ -383,7 +383,7 @@ const APP_CONFIG = {
         <path d="M50 20 L65 55 L55 50 L50 75 L45 50 L35 55 Z" fill="#ffffff"/>
         <circle cx="50" cy="78" r="4" fill="#ef4444"/>
       </svg>`,
-      shortDescription: "Tikco - Biến sự kiện quan trọng thành thanh tiến trình đếm ngược sinh động.",
+      shortDescription: "Tikco - Transform important events into dynamic countdown progress bars.",
       description: "Tikco is more than just a regular countdown app; it's a tool that visualizes your life's progress. Every important event, from birthdays and anniversaries to work deadlines, travel plans, and health goals, is vividly displayed through stunning gradient progress bars that move smoothly right on your device screen.",
       features: [
         "Check it out on the App/Game",
