@@ -3,7 +3,7 @@
  * Thiết kế bởi lập trình viên 50+ năm kinh nghiệm: tinh gọn, không thư viện thừa, tương thích tốt.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+const initApp = () => {
   // Lấy dữ liệu cấu hình từ window (đã nạp từ config.js)
   const config = window.APP_CONFIG;
   if (!config) {
@@ -16,12 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const mainContent = document.getElementById('main-content');
   const policyPage = document.getElementById('policy-page');
   const policyContent = document.getElementById('policy-content');
-  
+
   // 1. QUẢN LÝ CHẾ ĐỘ SÁNG / TỐI (THEME SYSTEM)
   const initTheme = () => {
-    const savedTheme = localStorage.getItem('theme');
+    let savedTheme = null;
+    try {
+      savedTheme = localStorage.getItem('theme');
+    } catch (e) {
+      console.warn('localStorage is not available:', e);
+    }
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
       document.documentElement.setAttribute('data-theme', 'dark');
       updateThemeToggleIcon('dark');
@@ -34,16 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleTheme = () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
+
     document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+    try {
+      localStorage.setItem('theme', newTheme);
+    } catch (e) {
+      console.warn('localStorage is not available:', e);
+    }
     updateThemeToggleIcon(newTheme);
   };
 
   const updateThemeToggleIcon = (theme) => {
     if (!themeToggle) return;
-    themeToggle.innerHTML = theme === 'dark' 
-      ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41/></svg>` // Icon Mặt Trời
+    themeToggle.innerHTML = theme === 'dark'
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></svg>` // Icon Mặt Trời
       : `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`; // Icon Mặt Trăng
   };
 
@@ -71,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tên và chức danh ở Hero
     const heroTitle = document.getElementById('hero-title');
     if (heroTitle) {
-      heroTitle.innerHTML = `Xin chào, tôi là <br><span>${config.developer.name}</span>`;
+      heroTitle.innerHTML = `Hello, I am <br><span>${config.developer.name}</span>`;
     }
     const heroSubtitle = document.getElementById('hero-subtitle');
     if (heroSubtitle) heroSubtitle.textContent = config.developer.title;
@@ -106,13 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const footerCopyright = document.getElementById('footer-copyright');
     if (footerCopyright) {
       const year = new Date().getFullYear();
-      footerCopyright.textContent = `© ${year} ${config.developer.name}. Bảo lưu mọi quyền.`;
+      footerCopyright.textContent = `© ${year} ${config.developer.name}. All rights reserved.`;
     }
 
     // Mạng xã hội ở Footer
-    const socialLinks = config.developer.socialLinks;
+    const socialLinks = config.developer ? config.developer.socialLinks : null;
     const footerSocials = document.getElementById('footer-socials');
-    if (footerSocials) {
+    if (footerSocials && socialLinks) {
       let html = '';
       if (socialLinks.github && socialLinks.github !== '#') {
         html += `<a href="${socialLinks.github}" target="_blank" class="social-icon" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></a>`;
@@ -137,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderApps = (filter) => {
     if (!appsGrid) return;
-    
+
     // Lọc danh sách
     const filteredApps = config.apps.filter(app => {
       if (filter === 'all') return true;
@@ -145,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     appsGrid.innerHTML = '';
-    
+
     if (filteredApps.length === 0) {
       appsGrid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">Không tìm thấy ứng dụng nào phù hợp.</div>`;
       return;
@@ -155,8 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.className = 'app-card fade-in';
       card.dataset.id = app.id;
-      
-      const appIconHtml = app.logoUrl 
+
+      const appIconHtml = app.logoUrl
         ? `<img src="${app.logoUrl}" alt="${app.name}" class="w-full h-full object-cover">`
         : app.logoSvg;
 
@@ -175,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ${appIconHtml}
           </div>
           <div class="app-info">
-            <span class="app-badge ${app.type}">${app.type === 'app' ? 'Ứng dụng' : 'Trò chơi'}</span>
+            <span class="app-badge ${app.type}">${app.type === 'app' ? 'Application' : 'Game'}</span>
             <h3 class="app-name">${app.name}</h3>
           </div>
         </div>
@@ -184,10 +193,10 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="app-card-footer">
           <div class="store-icons">
-            ${storeBadgesHtml || '<span style="font-size:0.75rem; color:var(--text-muted)">Sắp ra mắt</span>'}
+            ${storeBadgesHtml || '<span style="font-size:0.75rem; color:var(--text-muted)">Coming soon</span>'}
           </div>
           <span class="card-more-link">
-            Xem chi tiết 
+            See details 
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </span>
         </div>
@@ -212,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. QUẢN LÝ DIALOG / MODAL CHI TIẾT
   const modalOverlay = document.getElementById('app-modal');
   const modalClose = document.getElementById('modal-close');
-  
+
   const openAppModal = (app) => {
     if (!modalOverlay) return;
 
@@ -228,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Icon
     if (modalIcon) {
-      modalIcon.innerHTML = app.logoUrl 
+      modalIcon.innerHTML = app.logoUrl
         ? `<img src="${app.logoUrl}" alt="${app.name}" class="w-full h-full object-cover rounded-3xl">`
         : app.logoSvg;
       modalIcon.style.backgroundColor = 'var(--bg-tertiary)';
@@ -237,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Title & Badge
     if (modalTitle) modalTitle.textContent = app.name;
     if (modalBadge) {
-      modalBadge.textContent = app.type === 'app' ? 'Ứng dụng' : 'Trò chơi';
+      modalBadge.textContent = app.type === 'app' ? 'Application' : 'Game';
       modalBadge.className = `app-badge ${app.type}`;
     }
 
@@ -261,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ảnh chụp màn hình (Carousel)
     if (modalScreenshots) {
       modalScreenshots.innerHTML = '';
-      
+
       // Nếu app có ảnh thực tế thì render ảnh thực tế
       if (app.screenshots && app.screenshots.length > 0) {
         app.screenshots.forEach((screenUrl, idx) => {
@@ -276,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 1; i <= 3; i++) {
           const mockScreen = document.createElement('div');
           mockScreen.className = 'screenshot-card-mock';
-          
+
           let screenContent = '';
           if (i === 1) {
             screenContent = `
@@ -312,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
             `;
           }
-          
+
           mockScreen.innerHTML = screenContent;
           modalScreenshots.appendChild(mockScreen);
         }
@@ -353,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </svg>
           <div class="store-btn-text">
             <span class="store-btn-subtitle">Android</span>
-            <span class="store-btn-title">Sắp phát hành</span>
+            <span class="store-btn-title">Coming soon</span>
           </div>
         `;
         modalDownloads.appendChild(playBtn);
@@ -388,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </svg>
           <div class="store-btn-text">
             <span class="store-btn-subtitle">iOS</span>
-            <span class="store-btn-title">Sắp phát hành</span>
+            <span class="store-btn-title">Coming soon</span>
           </div>
         `;
         modalDownloads.appendChild(appBtn);
@@ -398,10 +407,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Các đường dẫn xem chính sách pháp lý
     if (modalPolicyLinks) {
       modalPolicyLinks.innerHTML = `
-        <a href="#privacy/${app.id}" id="modal-privacy-link">Chính sách bảo mật (Privacy Policy)</a>
-        <a href="#terms/${app.id}" id="modal-terms-link">Điều khoản sử dụng (Terms of Service)</a>
+        <a href="#privacy/${app.id}" id="modal-privacy-link">Privacy Policy</a>
+        <a href="#terms/${app.id}" id="modal-terms-link">Terms of Service</a>
       `;
-      
+
       // Khi click vào các link này trong modal, hãy ẩn modal đi trước để hiển thị trang chính sách
       const links = modalPolicyLinks.querySelectorAll('a');
       links.forEach(link => {
@@ -422,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (modalClose) {
     modalClose.addEventListener('click', closeModal);
   }
-  
+
   // Click ra ngoài modal để đóng
   if (modalOverlay) {
     modalOverlay.addEventListener('click', (e) => {
@@ -438,38 +447,38 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. ĐIỀU HƯỚNG DÀNH RIÊNG CHO CHÍNH SÁCH BẢO MẬT ĐỘNG (HASH ROUTER SYSTEM)
   const handleRouting = () => {
     const hash = window.location.hash;
-    
+
     if (hash.startsWith('#privacy/') || hash.startsWith('#terms/')) {
       const isPrivacy = hash.startsWith('#privacy/');
       const appId = hash.split('/')[1];
-      
+
       // Tìm ứng dụng trong mảng cấu hình
       const app = config.apps.find(a => a.id === appId);
-      
+
       if (app) {
         // Ẩn nội dung trang chính, hiển thị trang pháp lý
         if (mainContent) mainContent.style.display = 'none';
         if (policyPage) policyPage.classList.add('active');
-        
+
         let contentHtml = '';
         if (isPrivacy) {
-          contentHtml = app.privacyPolicy || `<h3>Chính Sách Bảo Mật cho ${app.name}</h3><p>Nội dung đang được cập nhật...</p>`;
+          contentHtml = app.privacyPolicy || `<h3>Privacy Policy for ${app.name}</h3><p>Nội dung đang được cập nhật...</p>`;
         } else {
-          contentHtml = app.termsOfService || `<h3>Điều Khoản Sử Dụng cho ${app.name}</h3><p>Nội dung đang được cập nhật...</p>`;
+          contentHtml = app.termsOfService || `<h3>Terms of Service for ${app.name}</h3><p>Nội dung đang được cập nhật...</p>`;
         }
-        
+
         // Thêm nút quay lại
         if (policyContent) {
           policyContent.innerHTML = `
             <a href="#" class="policy-back-btn">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-              Quay lại trang chủ
+              Back to home page
             </a>
             <div class="policy-html-content">
               ${contentHtml}
             </div>
           `;
-          
+
           // Thêm sự kiện quay lại bằng nút hoặc hash
           const backBtn = policyContent.querySelector('.policy-back-btn');
           if (backBtn) {
@@ -479,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
           }
         }
-        
+
         // Cuộn lên đầu trang
         window.scrollTo(0, 0);
       } else {
@@ -490,12 +499,16 @@ document.addEventListener('DOMContentLoaded', () => {
       // Hiển thị lại trang chủ chính
       if (policyPage) policyPage.classList.remove('active');
       if (mainContent) mainContent.style.display = 'block';
-      
+
       // Cuộn đến phần nếu hash là ID định vị (ví dụ #apps)
       if (hash && hash.length > 1) {
-        const targetElement = document.querySelector(hash);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
+        try {
+          const targetElement = document.querySelector(hash);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        } catch (e) {
+          console.warn('Invalid query selector for hash:', hash, e);
         }
       }
     }
@@ -508,12 +521,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
-      const name = document.getElementById('form-name').value;
-      const email = document.getElementById('form-email').value;
-      const subject = document.getElementById('form-subject').value;
-      const message = document.getElementById('form-message').value;
-      
+
+      const nameEl = document.getElementById('form-name');
+      const emailEl = document.getElementById('form-email');
+      const subjectEl = document.getElementById('form-subject');
+      const messageEl = document.getElementById('form-message');
+
+      const name = nameEl ? nameEl.value : '';
+      const email = emailEl ? emailEl.value : '';
+      const subject = subjectEl ? subjectEl.value : '';
+      const message = messageEl ? messageEl.value : '';
+
       // Tạo hiệu ứng gửi
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalBtnText = submitBtn.innerHTML;
@@ -529,9 +547,9 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         // Hiển thị thông báo thành công đẹp mắt
         alert(`Cảm ơn ${name}! Ý kiến phản hồi của bạn đã được ghi nhận. Hệ thống sẽ tự động mở ứng dụng gửi thư để bạn gửi trực tiếp tới ${config.developer.email}.`);
-        
+
         // Mở mailto client
-        const mailtoUrl = `mailto:${config.developer.email}?subject=${encodeURIComponent(subject || 'Liên hệ từ Portfolio')}&body=${encodeURIComponent(`Xin chào ${config.developer.name},\n\nTên tôi là: ${name}\nEmail liên hệ: ${email}\n\nNội dung liên hệ:\n${message}`)}`;
+        const mailtoUrl = `mailto:${config.developer.email}?subject=${encodeURIComponent(subject || 'Liên hệ từ Portfolio')}&body=${encodeURIComponent(`Hello ${config.developer.name},\n\nI am ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
         window.location.href = mailtoUrl;
 
         // Reset form
@@ -563,4 +581,10 @@ document.addEventListener('DOMContentLoaded', () => {
   loadDeveloperInfo();
   renderApps('all');
   handleRouting(); // Kiểm tra xem nếu người dùng load trang bằng direct hash link
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}

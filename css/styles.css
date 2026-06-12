@@ -8,21 +8,31 @@
 /* 1. KHAI BÁO BIẾN CHO HỆ THỐNG MÀU (CSS VARIABLES) */
 :root {
   /* Tông màu sáng mặc định (Dịu mắt, thanh lịch) */
-  --bg-primary: #f8fafc;       /* Slate 50 */
-  --bg-secondary: #ffffff;     /* Trắng tinh */
-  --bg-tertiary: #f1f5f9;      /* Slate 100 */
+  --bg-primary: #f8fafc;
+  /* Slate 50 */
+  --bg-secondary: #ffffff;
+  /* Trắng tinh */
+  --bg-tertiary: #f1f5f9;
+  /* Slate 100 */
   --bg-glass: rgba(255, 255, 255, 0.75);
-  
-  --text-primary: #0f172a;     /* Slate 900 */
-  --text-secondary: #64748b;   /* Slate 500 */
-  --text-muted: #94a3b8;       /* Slate 400 */
-  
-  --accent: #0d9488;           /* Teal 600 - Màu xanh mòng két cực kỳ dễ chịu và chuyên nghiệp */
-  --accent-hover: #0f766e;     /* Teal 700 */
+
+  --text-primary: #0f172a;
+  /* Slate 900 */
+  --text-secondary: #64748b;
+  /* Slate 500 */
+  --text-muted: #94a3b8;
+  /* Slate 400 */
+
+  --accent: #0d9488;
+  /* Teal 600 - Màu xanh mòng két cực kỳ dễ chịu và chuyên nghiệp */
+  --accent-hover: #0f766e;
+  /* Teal 700 */
   --accent-light: rgba(13, 148, 136, 0.1);
-  --accent-secondary: #0284c7;  /* Sky 600 */
-  
-  --border-color: #e2e8f0;     /* Slate 200 */
+  --accent-secondary: #0284c7;
+  /* Sky 600 */
+
+  --border-color: #e2e8f0;
+  /* Slate 200 */
   --card-shadow: 0 10px 25px -5px rgba(148, 163, 184, 0.08), 0 8px 10px -6px rgba(148, 163, 184, 0.08);
   --modal-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
   --radius-sm: 8px;
@@ -35,21 +45,31 @@
 
 /* Tông màu tối (Dark Mode - Êm dịu, chống mỏi mắt ban đêm) */
 [data-theme="dark"] {
-  --bg-primary: #090d16;       /* Slate đậm sâu */
-  --bg-secondary: #111827;     /* Gray 900 */
-  --bg-tertiary: #1f2937;      /* Gray 800 */
+  --bg-primary: #090d16;
+  /* Slate đậm sâu */
+  --bg-secondary: #111827;
+  /* Gray 900 */
+  --bg-tertiary: #1f2937;
+  /* Gray 800 */
   --bg-glass: rgba(17, 24, 39, 0.75);
-  
-  --text-primary: #f9fafb;     /* Gray 50 */
-  --text-secondary: #9ca3af;   /* Gray 400 */
-  --text-muted: #6b7280;       /* Gray 500 */
-  
-  --accent: #14b8a6;           /* Teal 500 phát sáng nhẹ */
-  --accent-hover: #0d9488;     /* Teal 600 */
+
+  --text-primary: #f9fafb;
+  /* Gray 50 */
+  --text-secondary: #9ca3af;
+  /* Gray 400 */
+  --text-muted: #6b7280;
+  /* Gray 500 */
+
+  --accent: #14b8a6;
+  /* Teal 500 phát sáng nhẹ */
+  --accent-hover: #0d9488;
+  /* Teal 600 */
   --accent-light: rgba(20, 184, 166, 0.15);
-  --accent-secondary: #38bdf8;  /* Sky 400 */
-  
-  --border-color: #374151;     /* Gray 700 */
+  --accent-secondary: #38bdf8;
+  /* Sky 400 */
+
+  --border-color: #374151;
+  /* Gray 700 */
   --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
   --modal-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
@@ -79,13 +99,16 @@ body {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--border-color);
   border-radius: var(--radius-sm);
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
@@ -158,6 +181,8 @@ header {
   display: flex;
   align-items: center;
   gap: 2rem;
+  margin-left: 3.5rem;
+  margin-right: auto;
 }
 
 .nav-link {
@@ -168,7 +193,8 @@ header {
   padding: 0.5rem 0;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
   color: var(--accent);
 }
 
@@ -183,7 +209,8 @@ header {
   transition: width var(--transition-fast);
 }
 
-.nav-link:hover::after, .nav-link.active::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 100%;
 }
 
@@ -331,8 +358,15 @@ header {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* 5. APPS & GAMES SECTION */
@@ -912,7 +946,8 @@ header {
   color: var(--text-secondary);
 }
 
-.form-input, .form-textarea {
+.form-input,
+.form-textarea {
   width: 100%;
   padding: 0.75rem 1rem;
   border-radius: var(--radius-sm);
@@ -924,7 +959,8 @@ header {
   transition: all var(--transition-fast);
 }
 
-.form-input:focus, .form-textarea:focus {
+.form-input:focus,
+.form-textarea:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-light);
@@ -978,19 +1014,19 @@ footer {
     text-align: center;
     gap: 2.5rem;
   }
-  
+
   .hero-text h1 {
     font-size: 2.5rem;
   }
-  
+
   .hero-description {
     margin: 0 auto 2rem auto;
   }
-  
+
   .hero-buttons {
     justify-content: center;
   }
-  
+
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -1001,30 +1037,88 @@ footer {
   html {
     font-size: 15px;
   }
-  
+
   .nav-links {
-    display: none; /* Hoặc ẩn bớt cho gọn, chuyển thành nút menu di động */
+    display: none;
+    /* Hoặc ẩn bớt cho gọn, chuyển thành nút menu di động */
   }
-  
+
   .form-group-row {
     grid-template-columns: 1fr;
     gap: 0;
   }
-  
+
   .modal-content {
     padding: 1.5rem;
   }
-  
+
   .modal-app-header {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .modal-download-buttons {
     flex-direction: column;
   }
-  
+
   .store-btn {
     width: 100%;
   }
+}
+
+/* =========================================================================
+   SỬA LỖI CO GIÃN HÌNH ẢNH (IMAGE AUTO-SCALING FIX)
+   ========================================================================= */
+
+/* Ràng buộc ảnh trong các container logo/icon */
+.brand-logo img,
+.app-icon img,
+.modal-app-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Bo góc cho logo trong modal */
+.modal-app-icon {
+  overflow: hidden;
+}
+
+/* Ảnh logo lớn ở Hero Section */
+.hero-logo-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+/* Định dạng hình ảnh screenshot trong carousel của Modal */
+.screenshot-carousel img {
+  width: 13rem;
+  /* Tương đương w-48 */
+  height: 25rem;
+  /* Tương đương h-80 */
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+/* Các class tiện ích bổ trợ (Tailwind compatibility) */
+.w-full {
+  width: 100% !important;
+}
+
+.h-full {
+  height: 100% !important;
+}
+
+.object-cover {
+  object-fit: cover !important;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0 !important;
 }
